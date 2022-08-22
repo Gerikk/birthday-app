@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
+@Table(name = "birthday", schema = "public")
 public class Birthday {
 
     @Id
@@ -37,10 +38,6 @@ public class Birthday {
 
     public Long getId() {
         return id;
-    }
-
-    public User getUser() {
-        return user;
     }
 
     public LocalDate getDate() {

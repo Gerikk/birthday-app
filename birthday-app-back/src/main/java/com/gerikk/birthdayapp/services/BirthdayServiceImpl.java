@@ -26,9 +26,7 @@ public class BirthdayServiceImpl implements BirthdayService {
     @Override
     public List<Birthday> getBirthdaysByUserId(Long userId) {
 
-        List<Birthday> list = userService.getAllUsers().stream().filter(user -> user.getId().equals(userId))
-
-        return null;
+        return userService.getAllUsers().stream().filter(user -> user.getId().equals(userId)).findFirst().get().getBirthdays().stream().toList();
     }
 
     @Override
