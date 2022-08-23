@@ -1,9 +1,13 @@
 package com.gerikk.birthdayapp.services;
 
+import com.gerikk.birthdayapp.exceptions.UserAlreadyExistsException;
 import com.gerikk.birthdayapp.exceptions.UserNotFoundException;
+import com.gerikk.birthdayapp.models.Role;
 import com.gerikk.birthdayapp.models.User;
 import com.gerikk.birthdayapp.repositories.UserRepository;
+import com.gerikk.birthdayapp.security.MyUserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,8 +19,11 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private RoleService roleService;
+
     @Override
-    public User login(String username, String password) {
+    public UserDetails login(String username, String password) {
 
         Optional<User> userOptional = userRepository.findByUsernameAndPassword(username, password);
 
@@ -24,7 +31,7 @@ public class UserServiceImpl implements UserService {
             throw new UserNotFoundException();
         }
 
-        return userOptional.get();
+        return new MyUserPrincipal(userOptional.get());
     }
 
     @Override
@@ -39,6 +46,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User save(User user) {
-        return userRepository.save(user);
+
+        if (userRepository.findByUsernameAndPassword(user.getUsername(), user.getPassword()).isPresent()) {
+            throw new UserAlreadyExistsException("Déjà en base");
+        }
+
+        Role roleUser = roleService.getRoleByUsername("ROLE_USER");
+
+        user.getRoles().add(roleUser);
+        this.userRepository.save(user);
+        return user;
     }
+
 }
