@@ -18,6 +18,7 @@ import com.gerikk.android.birthday_app_front.R;
 import com.gerikk.android.birthday_app_front.utils.ApiCallback;
 import com.gerikk.android.birthday_app_front.utils.Util;
 import com.gerikk.android.birthday_app_front.utils.UtilApi;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -68,13 +69,13 @@ public class LoginActivity extends AppCompatActivity implements ApiCallback {
 
         mPasswordView.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                // TODO : appeler la méthode pour tenter le login
+                this.attemptLogin();
             }
             return false;
         });
 
         mLoginFormView.setOnClickListener(v -> {
-            // TODO : appeler la méthode pour tenter le login
+            this.attemptLogin();
         });
     }
 
@@ -115,6 +116,17 @@ public class LoginActivity extends AppCompatActivity implements ApiCallback {
             map.put("password", password);
 
             // TODO : Appeler la méthode permettant de faire un appel API via POST
+            UtilApi.post(UtilApi.URL_LOGIN, map, new ApiCallback() {
+                @Override
+                public void fail(String json) {
+                    Snackbar.make(findViewById(R.id.coordinator_root), "Error", Snackbar.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void success(String json) {
+                    Snackbar.make(findViewById(R.id.coordinator_root), "Success", Snackbar.LENGTH_SHORT).show();
+                }
+            });
 
         }
     }
@@ -127,8 +139,8 @@ public class LoginActivity extends AppCompatActivity implements ApiCallback {
     public void fail(final String json) {
         mProgressView.setVisibility(View.INVISIBLE);
         handler.post(() -> {
-            Log.d("lol", "fail: " + json);
-            // TODO : Etablisser un comportement lors d'un fail
+            Log.d("Grosse_bourde", "fail: " + json);
+            Snackbar.make(findViewById(R.id.coordinator_root), "Erreur", Snackbar.LENGTH_SHORT).show();
 
         });
     }
@@ -137,9 +149,12 @@ public class LoginActivity extends AppCompatActivity implements ApiCallback {
     public void success(final String json) {
 
         handler.post(() -> {
-            Log.d("lol", "success: " + json);
-            // TODO : Etablisser un comportement lors d'un success
-            // TODO : Faites la redirection
+            Log.d("Reussi", "success: " + json);
+
+            Snackbar.make(findViewById(R.id.coordinator_root), "Anniversaire rajouté", Snackbar.LENGTH_SHORT).show();
+
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
             
         });
     }
