@@ -40,6 +40,10 @@ public class Birthday {
         return id;
     }
 
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public LocalDate getDate() {
         return date;
     }
