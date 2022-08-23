@@ -1,12 +1,13 @@
 package com.gerikk.birthdayapp.services;
 
 import com.gerikk.birthdayapp.models.User;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;
 
 public interface UserService {
 
-    public User login(String username, String password);
+    public UserDetails login(String username, String password);
 
     public List<User> getAllUsers();
 

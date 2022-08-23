@@ -1,8 +1,7 @@
 package com.gerikk.birthdayapp.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.Set;
 
 @Entity
@@ -18,6 +17,14 @@ public class User {
     private String password;
 
     private String email;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
+    )
+    private Collection<Role> roles;
 
     @OneToMany(mappedBy = "user")
     private Set<Birthday> birthdays;
@@ -54,5 +61,13 @@ public class User {
 
     public Set<Birthday> getBirthdays() {
         return birthdays;
+    }
+
+    public Collection<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Collection<Role> roles) {
+        this.roles = roles;
     }
 }
