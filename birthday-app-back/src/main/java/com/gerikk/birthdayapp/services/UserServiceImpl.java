@@ -41,4 +41,15 @@ public class UserServiceImpl implements UserService {
     public User save(User user) {
         return userRepository.save(user);
     }
+/*
+    public UserDetails loadUserByUsername(String username, String password) throws UsernameNotFoundException {
+
+        Optional<User> userOptional = userRepository.findByUsernameAndPassword(username, password);
+
+        if (!userOptional.isPresent()) {
+            throw new UsernameNotFoundException("Utilisateur introuvable");
+        }
+        return new MyUserPrincipal(userOptional.get());
+    }
+*/
 }
