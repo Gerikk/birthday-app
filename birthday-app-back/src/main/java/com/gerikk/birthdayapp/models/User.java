@@ -1,6 +1,7 @@
 package com.gerikk.birthdayapp.models;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
 
@@ -31,6 +32,7 @@ public class User {
 
     public User() {
         super();
+        this.roles = new ArrayList<>();
     }
 
     @Override
