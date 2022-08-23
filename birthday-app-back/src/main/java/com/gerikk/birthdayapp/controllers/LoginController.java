@@ -1,6 +1,5 @@
 package com.gerikk.birthdayapp.controllers;
 
-import com.gerikk.birthdayapp.dto.UserDto;
 import com.gerikk.birthdayapp.models.User;
 import com.gerikk.birthdayapp.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +14,8 @@ public class LoginController {
     private UserService userService;
 
     @PostMapping("/users")
-    public User login(@RequestBody UserDto userDto){
-        return userService.login(userDto.getUsername(), userDto.getPassword());
+    public User login(@RequestBody User user){
+        return userService.login(user.getUsername(), user.getPassword());
     }
 
 

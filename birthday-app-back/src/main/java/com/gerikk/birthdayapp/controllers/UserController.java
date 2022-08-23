@@ -1,10 +1,13 @@
 package com.gerikk.birthdayapp.controllers;
 
+import com.gerikk.birthdayapp.exceptions.UserNotFoundException;
 import com.gerikk.birthdayapp.models.Birthday;
 import com.gerikk.birthdayapp.models.User;
 import com.gerikk.birthdayapp.services.BirthdayServiceImpl;
 import com.gerikk.birthdayapp.services.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,11 +20,20 @@ public class UserController {
     @Autowired
     private UserServiceImpl userService;
 
+    @Autowired
     private BirthdayServiceImpl birthdayService;
 
     @GetMapping({"", "/"})
     public List<User> getUsers() {
         return userService.getAllUsers();
+    }
+
+    @PostMapping({"", "/"})
+    public ResponseEntity<User> createUser(@RequestBody User newUser) {
+
+        userService.save(newUser);
+
+        return new ResponseEntity<>(newUser, HttpStatus.CREATED);
     }
 
     @GetMapping("/{userId}")
@@ -30,12 +42,26 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/birthdays")
-    public Set<Birthday> getBirthdays(@PathVariable("userId") Long id){
+    public Set<Birthday> getBirthdays(@PathVariable("userId") Long id) {
 
         User user = userService.getUserById(id);
 
         return user.getBirthdays();
     }
 
+    @PostMapping("/{userId}/birthdays")
+    public ResponseEntity<Birthday> createBirthday(@PathVariable("userId") Long id, @RequestBody Birthday newBirthday) {
+
+        User user = userService.getUserById(id);
+
+        if (user == null) {
+            throw new UserNotFoundException();
+        } else {
+            newBirthday.setUser(user);
+            user.getBirthdays().add(newBirthday);
+            birthdayService.save(newBirthday);
+            return new ResponseEntity<>(newBirthday, HttpStatus.CREATED);
+        }
+    }
 
 }
