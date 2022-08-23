@@ -2,12 +2,15 @@ package com.gerikk.android.birthday_app_front.utils;
 
 import android.content.Context;
 
+import com.gerikk.android.birthday_app_front.adapters.ListItem;
+import com.gerikk.android.birthday_app_front.models.Birthday;
 import com.gerikk.android.birthday_app_front.models.User;
 
 import org.json.JSONException;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Util {
@@ -52,4 +55,30 @@ public class Util {
         long diff = System.currentTimeMillis() - date.getTime();
         return diff/31622400000l ;
     }
+
+    public static ArrayList<ListItem>   createListItems(ArrayList<Birthday> birthdays) {
+
+        ArrayList<ListItem> listItems = new ArrayList<>();
+
+        int monthNumber = 0;
+        String[] months = {"Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Aout", "Septembre", "Octobre", "Novembre", "Décembre"};
+
+        // TODO : trier la liste en fonction des mois d'anniversaire
+
+        return listItems;
+    }
+
+    public static boolean isDateValid(String string) {
+        try {
+            FORMAT_INPUT.parse(string);
+            return true;
+        } catch (ParseException e) {
+            return false;
+        }
+    }
+
+    public static Date initDateFromEditText(String str) throws ParseException {
+        return FORMAT_INPUT.parse(str);
+    }
+
 }
