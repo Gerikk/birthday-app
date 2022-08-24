@@ -2,7 +2,6 @@ package com.gerikk.birthdayapp.services;
 
 import com.gerikk.birthdayapp.models.Birthday;
 import com.gerikk.birthdayapp.repositories.BirthdayRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,12 +9,14 @@ import java.util.List;
 @Service
 public class BirthdayServiceImpl implements BirthdayService {
 
-    @Autowired
-    private BirthdayRepository birthdayRepository;
+    private final BirthdayRepository birthdayRepository;
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
+    public BirthdayServiceImpl(BirthdayRepository birthdayRepository, UserService userService) {
+        this.birthdayRepository = birthdayRepository;
+        this.userService = userService;
+    }
 
     @Override
     public List<Birthday> getAllBirthdays() {
