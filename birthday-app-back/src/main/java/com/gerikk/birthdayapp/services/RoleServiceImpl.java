@@ -3,7 +3,6 @@ package com.gerikk.birthdayapp.services;
 import com.gerikk.birthdayapp.exceptions.RoleNotFoundException;
 import com.gerikk.birthdayapp.models.Role;
 import com.gerikk.birthdayapp.repositories.RoleRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,8 +10,11 @@ import java.util.List;
 @Service
 public class RoleServiceImpl implements RoleService {
 
-    @Autowired
-    private RoleRepository roleRepository;
+    private final RoleRepository roleRepository;
+
+    public RoleServiceImpl(RoleRepository roleRepository) {
+        this.roleRepository = roleRepository;
+    }
 
     @Override
     public List<Role> getAllRoles() {

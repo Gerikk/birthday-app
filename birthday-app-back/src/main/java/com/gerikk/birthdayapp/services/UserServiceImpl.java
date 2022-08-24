@@ -16,11 +16,14 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private RoleService roleService;
+    private final RoleService roleService;
+
+    public UserServiceImpl(UserRepository userRepository, RoleService roleService) {
+        this.userRepository = userRepository;
+        this.roleService = roleService;
+    }
 
     @Override
     public UserDetails login(String username, String password) {

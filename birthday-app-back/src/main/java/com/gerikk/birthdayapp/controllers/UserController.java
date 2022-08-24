@@ -5,23 +5,27 @@ import com.gerikk.birthdayapp.models.Birthday;
 import com.gerikk.birthdayapp.models.User;
 import com.gerikk.birthdayapp.services.BirthdayServiceImpl;
 import com.gerikk.birthdayapp.services.UserServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
 
-    @Autowired
-    private UserServiceImpl userService;
+    private final UserServiceImpl userService;
 
-    @Autowired
-    private BirthdayServiceImpl birthdayService;
+    private final BirthdayServiceImpl birthdayService;
+
+
+    public UserController(UserServiceImpl userService, BirthdayServiceImpl birthdayService) {
+        this.userService = userService;
+        this.birthdayService = birthdayService;
+    }
 
     @GetMapping({"", "/"})
     public List<User> getUsers() {
@@ -38,7 +42,15 @@ public class UserController {
 
     @GetMapping("/{userId}")
     public User getUserById(@PathVariable("userId") Long id) {
-        return userService.getAllUsers().stream().filter(user -> user.getId().equals(id)).findFirst().get();
+
+        Optional<User> foundUser = userService.getAllUsers().stream().filter(user -> user.getId().equals(id)).findFirst();
+
+        if (foundUser.isPresent()) {
+            return foundUser.get();
+        } else {
+            throw new UserNotFoundException();
+        }
+
     }
 
     @GetMapping("/{userId}/birthdays")
