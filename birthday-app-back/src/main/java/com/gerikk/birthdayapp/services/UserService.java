@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface UserService {
 
-    public UserDetails login(String username, String password);
+    public User login(String username, String password);
 
     public List<User> getAllUsers();
 

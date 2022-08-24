@@ -31,17 +31,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public UserDetails login(String username, String password) {
+    public User login(String username, String password) {
 
-        Optional<User> userOptional = userRepository.findByUsernameAndPassword(username, password);
+        Optional<User> userOptional = userRepository.findByUsername(username);
 
-        if (userOptional.isEmpty()) {
+        if (userOptional.isEmpty() || !passwordEncoder.matches(password, userOptional.get().getPassword())) {
             throw new UserNotFoundException();
         }
 
-        this.loadUserByUsername(userOptional.get().getUsername());
-
-        return new MyUserPrincipal(userOptional.get());
+        return userOptional.get();
     }
 
     @Override
