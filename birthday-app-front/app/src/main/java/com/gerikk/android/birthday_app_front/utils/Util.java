@@ -1,6 +1,7 @@
 package com.gerikk.android.birthday_app_front.utils;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.gerikk.android.birthday_app_front.adapters.ListItem;
 import com.gerikk.android.birthday_app_front.models.Birthday;
@@ -28,18 +29,25 @@ public class Util {
     }
 
     public static User getUser(Context context) throws JSONException, ParseException {
-        User user = new User(context.getSharedPreferences(PREF_FILE, Context.MODE_PRIVATE).getString(USER, ""));
-        return user;
+        return new User(context.getSharedPreferences(PREF_FILE, Context.MODE_PRIVATE).getString(USER, ""));
     }
 
     public static boolean isUserNameValid(String userName) {
 
-        return userName != null;
+        if(userName == null|| TextUtils.isEmpty(userName)){
+            return false;
+        }
+
+        return userName.trim().length()>5;
     }
 
     public static boolean isPasswordValid(String password) {
 
-        return password != null;
+        if(password == null|| TextUtils.isEmpty(password)){
+            return false;
+        }
+
+        return password.trim().length()>5;
     }
 
     public static Date initDateFromDB(String dateStr) throws ParseException {
