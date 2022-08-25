@@ -123,7 +123,7 @@ public class LoginActivity extends AppCompatActivity implements ApiCallback {
 
 
                     runOnUiThread(() -> {
-                        Log.d("fail", "info");
+                        Log.d("info", json);
                         //Snackbar.make(findViewById(R.id.coordinator_root), "Error", Snackbar.LENGTH_SHORT).show();
                     });
 
@@ -133,7 +133,7 @@ public class LoginActivity extends AppCompatActivity implements ApiCallback {
                 public void success(String json) {
                     runOnUiThread(() -> {
 
-                        Log.d("success", "info");
+                        Log.d("info", "success");
                        //Snackbar.make(findViewById(R.id.coordinator_root), "Success", Snackbar.LENGTH_SHORT).show();
                     });
                 }
