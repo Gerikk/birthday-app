@@ -1,17 +1,39 @@
 package com.gerikk.birthdayapp.services;
 
+import com.gerikk.birthdayapp.exceptions.RoleNotFoundException;
 import com.gerikk.birthdayapp.models.Role;
+import com.gerikk.birthdayapp.repositories.RoleRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-public interface RoleService {
+@Service
+public class RoleService {
 
-    public List<Role> getAllRoles();
+    private final RoleRepository roleRepository;
 
-    public Role getRoleById(Long roleId);
+    public RoleService(RoleRepository roleRepository) {
+        this.roleRepository = roleRepository;
+    }
 
-    public Role getRoleByUsername(String username);
+    public List<Role> getAllRoles() {
+        return this.roleRepository.findAll();
+    }
 
-    public Role save(Role role);
+    public Role getRoleById(Long roleId) {
+        return roleRepository.findAll().stream()
+                .filter(role -> role.getId().equals(roleId)).findFirst()
+                .orElseThrow(RoleNotFoundException::new);
+    }
 
+    public Role getRoleByUsername(String username) {
+        return roleRepository.findAll().stream()
+                .filter(role -> role.getName().equals(username)).findFirst()
+                .orElseThrow(RoleNotFoundException::new);
+    }
+
+    public Role save(Role role) {
+        this.roleRepository.save(role);
+        return role;
+    }
 }

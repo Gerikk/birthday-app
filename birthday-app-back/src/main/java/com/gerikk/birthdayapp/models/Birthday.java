@@ -25,6 +25,9 @@ public class Birthday {
         super();
     }
 
+    public Birthday(User user, String firstname, String lastname, LocalDate date) {
+    }
+
     @Override
     public String toString() {
         return "Birthday{" +
