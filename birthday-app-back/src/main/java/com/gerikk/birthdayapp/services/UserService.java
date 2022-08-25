@@ -32,13 +32,8 @@ public class UserService implements UserDetailsService {
 
     public User login(String username, String password) {
 
-        Optional<User> userOptional = userRepository.findByUsername(username);
+        return userRepository.findByUsernameAndPassword(username, password).orElseThrow(UserNotFoundException::new);
 
-        if (userOptional.isEmpty() || !passwordEncoder.matches(password, userOptional.get().getPassword())) {
-            throw new UserNotFoundException();
-        }
-
-        return userOptional.get();
     }
 
     public List<User> getAllUsers() {
@@ -46,7 +41,7 @@ public class UserService implements UserDetailsService {
     }
 
     public User getUserById(Long id) {
-        return userRepository.findById(id).get();
+        return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
     }
 
     public User save(User user) {
@@ -59,8 +54,7 @@ public class UserService implements UserDetailsService {
 
         user.getRoles().add(roleUser);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        this.userRepository.save(user);
-        return user;
+        return userRepository.save(user);
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.gerikk.birthdayapp.controllers;
 
-import com.gerikk.birthdayapp.exceptions.UserNotFoundException;
 import com.gerikk.birthdayapp.models.Birthday;
 import com.gerikk.birthdayapp.models.User;
 import com.gerikk.birthdayapp.services.BirthdayService;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 @RestController
@@ -29,8 +27,8 @@ public class UserController {
     }
 
     @GetMapping({"", "/"})
-    public List<User> getUsers() {
-        return userService.getAllUsers();
+    public ResponseEntity<List<User>> getUsers() {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getAllUsers());
     }
 
     @PostMapping({"", "/"})
@@ -44,12 +42,11 @@ public class UserController {
     @GetMapping("/{userId}")
     public ResponseEntity<User> getUserById(@PathVariable("userId") Long id) {
 
-        Optional<User> foundUser = userService.getAllUsers().stream().filter(user -> user.getId().equals(id)).findFirst();
-
-        if (foundUser.isPresent()) {
-            return ResponseEntity.ok(foundUser.get());
-        } else {
-            throw new UserNotFoundException();
+        try {
+            User user = userService.getUserById(id);
+            return ResponseEntity.ok(user);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
         }
 
     }
@@ -65,17 +62,12 @@ public class UserController {
     @PostMapping("/{userId}/birthdays")
     public ResponseEntity<Birthday> createBirthday(
             @PathVariable("userId") Long id,
-            //@RequestBody Birthday newBirthday
             @RequestParam("firstname") final String firstname,
             @RequestParam("lastname") final String lastname,
             @RequestParam("date") final String date) {
-
-
         try {
-            //newBirthday.setUser(user);
             User user = userService.getUserById(id);
             Birthday newBirthday = new Birthday(user, firstname, lastname, LocalDate.parse(date));
-            //user.getBirthdays().add(newBirthday);
             return ResponseEntity.ok(birthdayService.save(newBirthday));
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
