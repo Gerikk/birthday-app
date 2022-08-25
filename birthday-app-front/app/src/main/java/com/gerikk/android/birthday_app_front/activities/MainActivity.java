@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements ApiCallback {
 
         //findViewById(R.id.fab).setOnClickListener(v -> this.showDialogAddNewBirthday());
     }
-
+/*
         private void showDialogAddNewBirthday() {
             final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
             final View view = LayoutInflater.from(MainActivity.this).inflate(R.layout.dialog_add_new_birthdate, null);
@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements ApiCallback {
             builder.setNegativeButton(android.R.string.cancel, null);
             builder.create().show();
         }
-
+*/
 
         private void addNewBirthday(String dateStr, String firstname, String lastname) {
             try {

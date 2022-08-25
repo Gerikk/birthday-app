@@ -17,7 +17,7 @@ import okhttp3.Response;
 
 public class UtilApi {
 
-    public static final String URL_LOGIN = "http://10.0.2.2:8080/login";
+    public static final String URL_LOGIN = "http://127.0.0.1:8080/login";
     public static final String CREATE_BIRTHDAY = "http://10.0.2.2:8080/users/{userId}/birthdays";
 
     public static OkHttpClient client = new OkHttpClient();
