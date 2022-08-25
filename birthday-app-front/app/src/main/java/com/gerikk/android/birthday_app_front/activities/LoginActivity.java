@@ -60,6 +60,7 @@ public class LoginActivity extends AppCompatActivity implements ApiCallback {
                 String email = mEmailView.getText().toString();
                 String password = mPasswordView.getText().toString();
 
+                mLoginFormView.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
                 mLoginFormView.setEnabled(Util.isUserNameValid(email) && Util.isPasswordValid(password));
             }
         };
@@ -74,12 +75,12 @@ public class LoginActivity extends AppCompatActivity implements ApiCallback {
             return false;
         });
 
-        mLoginFormView.setOnClickListener(v -> {
-            this.attemptLogin();
-        });
+        mLoginFormView.setOnClickListener(v ->
+            attemptLogin()
+        );
     }
 
-    private void attemptLogin() {
+    public void attemptLogin() {
 
         mEmailView.setError(null);
         mPasswordView.setError(null);
@@ -119,12 +120,22 @@ public class LoginActivity extends AppCompatActivity implements ApiCallback {
             UtilApi.post(UtilApi.URL_LOGIN, map, new ApiCallback() {
                 @Override
                 public void fail(String json) {
-                    Snackbar.make(findViewById(R.id.coordinator_root), "Error", Snackbar.LENGTH_SHORT).show();
+
+
+                    runOnUiThread(() -> {
+                        Log.d("info", json);
+                        //Snackbar.make(findViewById(R.id.coordinator_root), "Error", Snackbar.LENGTH_SHORT).show();
+                    });
+
                 }
 
                 @Override
                 public void success(String json) {
-                    Snackbar.make(findViewById(R.id.coordinator_root), "Success", Snackbar.LENGTH_SHORT).show();
+                    runOnUiThread(() -> {
+
+                        Log.d("info", "success");
+                       //Snackbar.make(findViewById(R.id.coordinator_root), "Success", Snackbar.LENGTH_SHORT).show();
+                    });
                 }
             });
 

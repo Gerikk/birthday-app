@@ -12,7 +12,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         if (!USER_SERVICE.isEmpty())
         startActivity(new Intent(this, LoginActivity.class));
-else
+        else
         startActivity(new Intent(this, MainActivity.class));
         finish();
     }

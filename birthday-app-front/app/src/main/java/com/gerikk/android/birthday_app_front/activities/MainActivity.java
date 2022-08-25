@@ -59,12 +59,12 @@ public class MainActivity extends AppCompatActivity implements ApiCallback {
         mBirthdayAdapter = new BirthdayAdapter(this, listItems);
         recyclerView.setAdapter(mBirthdayAdapter);
 
-        findViewById(R.id.fab).setOnClickListener(v -> this.showDialogAddNewBirthday());
+        //findViewById(R.id.fab).setOnClickListener(v -> this.showDialogAddNewBirthday());
     }
-
+/*
         private void showDialogAddNewBirthday() {
-            final AlertDialog.Builder builder = new AlertDialog.Builder(ListActivity.this);
-            final View view = LayoutInflater.from(ListActivity.this).inflate(R.layout.dialog_add_new_birthdate, null);
+            final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+            final View view = LayoutInflater.from(MainActivity.this).inflate(R.layout.dialog_add_new_birthdate, null);
             final EditText editTextFirstName = view.findViewById(R.id.edit_text_text_first_name);
             final EditText editTextLastName = view.findViewById(R.id.edit_text_text_last_name);
             final EditText editTextDate = view.findViewById(R.id.edit_text_text_date);
@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements ApiCallback {
             builder.setNegativeButton(android.R.string.cancel, null);
             builder.create().show();
         }
-
+*/
 
         private void addNewBirthday(String dateStr, String firstname, String lastname) {
             try {
@@ -133,12 +133,12 @@ public class MainActivity extends AppCompatActivity implements ApiCallback {
 
                 String[] id = {mUser.id.toString()};
 
-                UtilApi.post(String.format(UtilApi.CREATE_BIRTHDAY, (Object) id), map, ListActivity.this);
+                UtilApi.post(String.format(UtilApi.CREATE_BIRTHDAY, (Object) id), map, MainActivity.this);
 
             } catch (ParseException e) {
-                Toast.makeText(ListActivity.this, "Date incorrecte", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Date incorrecte", Toast.LENGTH_SHORT).show();
             } catch (Exception e) {
-                Toast.makeText(ListActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
 
     }
