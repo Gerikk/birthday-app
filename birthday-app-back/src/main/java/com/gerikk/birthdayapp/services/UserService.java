@@ -32,8 +32,13 @@ public class UserService implements UserDetailsService {
 
     public User login(String username, String password) {
 
-        return userRepository.findByUsernameAndPassword(username, password).orElseThrow(UserNotFoundException::new);
+        Optional<User> userOptional = userRepository.findByUsername(username);
 
+        if (userOptional.isEmpty() || !passwordEncoder.matches(password, userOptional.get().getPassword())) {
+            throw new UserNotFoundException();
+        }
+
+        return userOptional.get();
     }
 
     public List<User> getAllUsers() {

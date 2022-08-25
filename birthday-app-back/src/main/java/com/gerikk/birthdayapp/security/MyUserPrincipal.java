@@ -16,6 +16,8 @@ public class MyUserPrincipal implements UserDetails {
     private final User mUser;
 
     public MyUserPrincipal(User mUser) {
+
+        super();
         this.mUser = mUser;
     }
 
