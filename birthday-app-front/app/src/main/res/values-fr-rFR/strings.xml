@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Anniversaires</string>
+    <string name="invalid_password">Mot de passe incorrect</string>
+    <string name="error_field_required">Veuillez remplir ce champ</string>
+    <string name="invalid_username">Erreur utilisateur</string>
+    <string name="action_sign_in">Connexion</string>
+    <string name="prompt_username">Saisir utilisateur</string>
+    <string name="action_sign_in_short" />
+    <string name="prompt_password">Saisir mot de passe</string>
+    <string name="prompt_lastname">saisir nom</string>
+    <string name="prompt_date">JJ/MM/AAAA</string>
+    <string name="prompt_firstname">saisir prénom</string>
+    <string name="new_birthday">Nouvel anniversaire ?</string>
+    <string name="wrong_date">Date incorrecte</string>
+</resources>

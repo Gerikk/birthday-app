@@ -4,5 +4,5 @@ package com.gerikk.android.birthday_app_front.utils;
 public interface ApiCallback {
 
     void fail(String json);
-    void success(String json);
+    void success(String json, String bearer);
 }

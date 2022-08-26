@@ -41,8 +41,6 @@ public class MainActivity extends AppCompatActivity implements ApiCallback {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //Toolbar toolbar = findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
 
         try {
             mUser = Util.getUser(this);
@@ -86,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements ApiCallback {
                 }
             });
 
-            builder.setTitle("Nouvel anniversaire ?");
+            builder.setTitle(R.string.new_birthday);
             builder.setView(view);
             builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                 @Override
@@ -122,8 +120,6 @@ public class MainActivity extends AppCompatActivity implements ApiCallback {
 
                 Birthday birthday = new Birthday(date, firstname, lastname);
 
-                // TODO : Appeler la méthode qui ajoute cet anniversaire à la liste des anniversaires de cet utilisateur (comprendre ce que fait la méthode)
-
                 mBirthdayAdapter.setListItems(Util.createListItems(mUser.birthdays));
 
                 // Appel API POST /users/id/birthdays
@@ -132,9 +128,9 @@ public class MainActivity extends AppCompatActivity implements ApiCallback {
                 map.put("lastname", birthday.lastname);
                 map.put("date", Util.printDate(birthday.date));
 
-                String[] id = {mUser.id.toString()};
+                UtilApi.post(String.format(UtilApi.CREATE_BIRTHDAY, mUser.id.toString()), map, MainActivity.this, Util.getBearer(this));
 
-                UtilApi.post(String.format(UtilApi.CREATE_BIRTHDAY, (Object) id), map, MainActivity.this);
+                mBirthdayAdapter.notifyDataSetChanged();
 
             } catch (ParseException e) {
                 Toast.makeText(MainActivity.this, "Date incorrecte", Toast.LENGTH_SHORT).show();
@@ -150,7 +146,7 @@ public class MainActivity extends AppCompatActivity implements ApiCallback {
     }
 
     @Override
-    public void success(String json) {
+    public void success(String json, String bearer) {
 
     }
 }

@@ -11,14 +11,14 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:theme="@style/Theme.Birthdayappfront.AppBarOverlay">
 
-        <androidx.appcompat.widget.Toolbar
+        <!--<androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            app:popupTheme="@style/Theme.Birthdayappfront.PopupOverlay" />-->
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -28,9 +28,12 @@
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        android:contentDescription="button" />
+        android:contentDescription="button"
+        android:foreground="@android:drawable/ic_menu_add" />
         <!--android:src="@drawable/ic_baseline_add_24"-->
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

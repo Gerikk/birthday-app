@@ -13,12 +13,12 @@ import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.gerikk.android.birthday_app_front.R;
 import com.gerikk.android.birthday_app_front.utils.ApiCallback;
 import com.gerikk.android.birthday_app_front.utils.Util;
 import com.gerikk.android.birthday_app_front.utils.UtilApi;
-import com.google.android.material.snackbar.Snackbar;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -116,27 +116,7 @@ public class LoginActivity extends AppCompatActivity implements ApiCallback {
             map.put("username", email);
             map.put("password", password);
 
-            UtilApi.post(UtilApi.URL_LOGIN, map, new ApiCallback() {
-                @Override
-                public void fail(String json) {
-
-
-                    runOnUiThread(() -> {
-                        Log.d("error", json);
-                    });
-
-                }
-
-                @Override
-                public void success(String json) {
-                    runOnUiThread(() -> {
-                        Log.d("success", json);
-                        LoginActivity.this.success(json);
-                    });
-                }
-            });
-
-
+            UtilApi.post(UtilApi.URL_LOGIN, map, LoginActivity.this, null);
 
         }
     }
@@ -151,14 +131,17 @@ public class LoginActivity extends AppCompatActivity implements ApiCallback {
         handler.post(() -> {
             Log.d("Grosse_bourde", "fail: " + json);
 
+            Toast.makeText(LoginActivity.this, "User Incorrect", Toast.LENGTH_SHORT).show();
         });
     }
 
     @Override
-    public void success(final String json) {
+    public void success(final String json, String token) {
 
         handler.post(() -> {
             Log.d("Reussi", "return_success: " + json);
+
+            Util.setBearer(this, token);
 
             Util.setUser(this, json);
 

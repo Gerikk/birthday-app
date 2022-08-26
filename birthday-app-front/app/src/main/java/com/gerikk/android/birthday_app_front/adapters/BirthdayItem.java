@@ -6,8 +6,11 @@ public class BirthdayItem extends ListItem {
 
     public Birthday birthday;
 
+
     public BirthdayItem(Birthday birthday) {
         this.birthday = birthday;
+
+        index =(birthday.date.getMonth()+1) * 100 +birthday.date.getDate();
     }
 
     @Override

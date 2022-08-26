@@ -50,7 +50,6 @@
         android:layout_marginStart="48dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="48dp"
-        android:theme="@style/AppTheme.Button"
         android:layout_marginBottom="64dp"
         android:textColor="@color/white"
         android:textStyle="bold"

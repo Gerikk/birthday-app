@@ -4,7 +4,12 @@
     <string name="error_field_required">Please fill this field</string>
     <string name="invalid_username">Error Wrong username</string>
     <string name="action_sign_in">Sign in</string>
-    <string name="prompt_username">username</string>
-    <string name="action_sign_in_short" />
+    <string name="prompt_username">enter username</string>
+    <string name="action_sign_in_short" translatable="false" />
     <string name="prompt_password">enter password</string>
+    <string name="prompt_lastname">enter lastname</string>
+    <string name="prompt_date">DD/MM/YYYY</string>
+    <string name="prompt_firstname">enter firstname</string>
+    <string name="new_birthday">New Birthday ?</string>
+    <string name="wrong_date">Wrong date format</string>
 </resources>
