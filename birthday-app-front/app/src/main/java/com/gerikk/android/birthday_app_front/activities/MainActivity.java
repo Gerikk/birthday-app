@@ -90,10 +90,7 @@ public class MainActivity extends AppCompatActivity implements ApiCallback {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
 
-
                     addNewBirthday(editTextDate.getText().toString(), editTextFirstName.getText().toString(), editTextLastName.getText().toString());
-
-                    // TODO : récupérer les valeurs et appeler la méthode addNewBirthday
 
                 }
             });
@@ -129,8 +126,6 @@ public class MainActivity extends AppCompatActivity implements ApiCallback {
                 map.put("date", Util.printDate(birthday.date));
 
                 UtilApi.post(String.format(UtilApi.CREATE_BIRTHDAY, mUser.id.toString()), map, MainActivity.this, Util.getBearer(this));
-
-                mBirthdayAdapter.notifyDataSetChanged();
 
             } catch (ParseException e) {
                 Toast.makeText(MainActivity.this, "Date incorrecte", Toast.LENGTH_SHORT).show();
