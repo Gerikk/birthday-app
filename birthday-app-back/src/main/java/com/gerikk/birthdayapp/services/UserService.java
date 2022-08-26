@@ -2,7 +2,6 @@ package com.gerikk.birthdayapp.services;
 
 import com.gerikk.birthdayapp.exceptions.UserAlreadyExistsException;
 import com.gerikk.birthdayapp.exceptions.UserNotFoundException;
-import com.gerikk.birthdayapp.models.Role;
 import com.gerikk.birthdayapp.models.User;
 import com.gerikk.birthdayapp.repositories.UserRepository;
 import com.gerikk.birthdayapp.security.MyUserPrincipal;
@@ -20,13 +19,10 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
-    private final RoleService roleService;
-
     private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, RoleService roleService, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
-        this.roleService = roleService;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -34,8 +30,11 @@ public class UserService implements UserDetailsService {
 
         Optional<User> userOptional = userRepository.findByUsername(username);
 
-        if (userOptional.isEmpty() || !passwordEncoder.matches(password, userOptional.get().getPassword())) {
-            throw new UserNotFoundException();
+        if (userOptional.isEmpty()) {
+            throw new UserNotFoundException("Pas d'user");
+        }
+        else if (!passwordEncoder.matches(password, userOptional.get().getPassword())) {
+            throw new UserNotFoundException("Pas de mot de passe");
         }
 
         return userOptional.get();
@@ -54,10 +53,6 @@ public class UserService implements UserDetailsService {
         if (userRepository.findByUsername(user.getUsername()).isPresent()) {
             throw new UserAlreadyExistsException("Déjà en base");
         }
-
-        Role roleUser = roleService.getRoleByUsername("ROLE_USER");
-
-        user.getRoles().add(roleUser);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }

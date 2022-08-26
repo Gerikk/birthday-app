@@ -32,11 +32,11 @@ public class UserController {
     }
 
     @PostMapping({"", "/"})
-    public ResponseEntity<User> createUser(@RequestBody User newUser) {
+    public ResponseEntity<User> createUser(@RequestParam User user) {
 
-        userService.save(newUser);
+        userService.save(user);
 
-        return new ResponseEntity<>(newUser, HttpStatus.CREATED);
+        return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 
     @GetMapping("/{userId}")
@@ -67,8 +67,25 @@ public class UserController {
             @RequestParam("date") final String date) {
         try {
             User user = userService.getUserById(id);
-            Birthday newBirthday = new Birthday(user, firstname, lastname, LocalDate.parse(date));
+            Birthday newBirthday = new Birthday(null, LocalDate.parse(date), firstname, lastname, user);
             return ResponseEntity.ok(birthdayService.save(newBirthday));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PutMapping("/{userId}/birthdays/{birthdayId}")
+    public ResponseEntity<Birthday> updateBirthday(
+            @PathVariable("userId") Long id,
+            @PathVariable("birthdayId") Long birthdayId,
+            @RequestParam("firstname") final String firstname,
+            @RequestParam("lastname") final String lastname,
+            @RequestParam("date") final String date) {
+        try {
+            User user = userService.getUserById(id);
+            Birthday birthday = new Birthday(birthdayId, LocalDate.parse(date), firstname, lastname, user);
+
+            return ResponseEntity.ok(birthdayService.save(birthday));
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }

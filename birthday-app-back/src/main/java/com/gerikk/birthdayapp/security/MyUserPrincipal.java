@@ -1,6 +1,5 @@
 package com.gerikk.birthdayapp.security;
 
-import com.gerikk.birthdayapp.models.Role;
 import com.gerikk.birthdayapp.models.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -8,7 +7,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 
 public class MyUserPrincipal implements UserDetails {
@@ -24,12 +22,12 @@ public class MyUserPrincipal implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Collection<Role> roles = mUser.getRoles();
-        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        for (Role role : roles) {
-            authorities.add(new SimpleGrantedAuthority(role.getName()));
-        }
+        ArrayList<SimpleGrantedAuthority> authorities = new ArrayList<>();
         return authorities;
+    }
+
+    public String toJson(){
+        return mUser.toJson();
     }
 
     @Override

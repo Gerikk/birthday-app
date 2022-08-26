@@ -1,5 +1,7 @@
 package com.gerikk.birthdayapp.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 
@@ -15,6 +17,7 @@ public class Birthday {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd ")
     private LocalDate date;
 
     private String firstname;
@@ -25,7 +28,13 @@ public class Birthday {
         super();
     }
 
-    public Birthday(User user, String firstname, String lastname, LocalDate date) {
+    public Birthday(Long birthdayId, LocalDate date, String firstname, String lastname, User user) {
+        super();
+        this.id = birthdayId;
+        this.date = date;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.user = user;
     }
 
     @Override

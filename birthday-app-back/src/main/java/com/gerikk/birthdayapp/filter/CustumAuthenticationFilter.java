@@ -57,7 +57,7 @@ public class CustumAuthenticationFilter extends UsernamePasswordAuthenticationFi
                 .sign(algorithm);
 
         response.setHeader("token", access_token);
-
+        response.getWriter().write(myUserPrincipal.toJson());
 
 
     }
