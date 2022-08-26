@@ -41,8 +41,8 @@ public class MainActivity extends AppCompatActivity implements ApiCallback {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        //Toolbar toolbar = findViewById(R.id.toolbar);
+        //setSupportActionBar(toolbar);
 
         try {
             mUser = Util.getUser(this);
@@ -59,9 +59,9 @@ public class MainActivity extends AppCompatActivity implements ApiCallback {
         mBirthdayAdapter = new BirthdayAdapter(this, listItems);
         recyclerView.setAdapter(mBirthdayAdapter);
 
-        //findViewById(R.id.fab).setOnClickListener(v -> this.showDialogAddNewBirthday());
+        findViewById(R.id.fab).setOnClickListener(v -> this.showDialogAddNewBirthday());
     }
-/*
+
         private void showDialogAddNewBirthday() {
             final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
             final View view = LayoutInflater.from(MainActivity.this).inflate(R.layout.dialog_add_new_birthdate, null);
@@ -93,6 +93,8 @@ public class MainActivity extends AppCompatActivity implements ApiCallback {
                 public void onClick(DialogInterface dialog, int which) {
 
 
+                    addNewBirthday(editTextDate.getText().toString(), editTextFirstName.getText().toString(), editTextLastName.getText().toString());
+
                     // TODO : récupérer les valeurs et appeler la méthode addNewBirthday
 
                 }
@@ -101,22 +103,21 @@ public class MainActivity extends AppCompatActivity implements ApiCallback {
             builder.setNegativeButton(android.R.string.cancel, null);
             builder.create().show();
         }
-*/
 
         private void addNewBirthday(String dateStr, String firstname, String lastname) {
             try {
                 if (dateStr == null || dateStr.isEmpty()) {
-                    throw new Exception("Date incorrecte");
+                    throw new Exception("Date incorrect");
                 }
 
                 Date date = Util.initDateFromEditText(dateStr);
 
                 if (firstname == null || firstname.isEmpty()) {
-                    throw new Exception("Prénom incorrecte");
+                    throw new Exception("Prénom incorrect");
                 }
 
                 if (lastname == null || lastname.isEmpty()) {
-                    throw new Exception("Nom incorrecte");
+                    throw new Exception("Nom incorrect");
                 }
 
                 Birthday birthday = new Birthday(date, firstname, lastname);

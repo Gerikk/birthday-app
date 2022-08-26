@@ -17,8 +17,9 @@ import okhttp3.Response;
 
 public class UtilApi {
 
-    public static final String URL_LOGIN = "http://127.0.0.1:8080/login";
-    public static final String CREATE_BIRTHDAY = "http://10.0.2.2:8080/users/{userId}/birthdays";
+    public static final String BASE_URL = "http://192.168.1.14:8080";
+    public static final String URL_LOGIN = BASE_URL+"/login";
+    public static final String CREATE_BIRTHDAY = BASE_URL+"/users/{userId}/birthdays";
 
     public static OkHttpClient client = new OkHttpClient();
 
@@ -37,7 +38,7 @@ public class UtilApi {
                 if (response.isSuccessful())
                     callback.success(response.body().string());
                 else {
-                    callback.fail("error");
+                    callback.fail("error_on_response");
                 }
             }
         });
@@ -63,9 +64,9 @@ public class UtilApi {
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull final Response response) throws IOException {
-                if (response.isSuccessful())
+                if (response.isSuccessful()) {
                     callback.success(response.body().string());
-                else {
+                }else {
                     callback.fail("error");
                 }
             }

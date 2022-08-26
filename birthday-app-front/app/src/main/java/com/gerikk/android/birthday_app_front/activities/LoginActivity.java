@@ -116,15 +116,13 @@ public class LoginActivity extends AppCompatActivity implements ApiCallback {
             map.put("username", email);
             map.put("password", password);
 
-            // TODO : Appeler la méthode permettant de faire un appel API via POST
             UtilApi.post(UtilApi.URL_LOGIN, map, new ApiCallback() {
                 @Override
                 public void fail(String json) {
 
 
                     runOnUiThread(() -> {
-                        Log.d("info", json);
-                        //Snackbar.make(findViewById(R.id.coordinator_root), "Error", Snackbar.LENGTH_SHORT).show();
+                        Log.d("error", json);
                     });
 
                 }
@@ -132,12 +130,13 @@ public class LoginActivity extends AppCompatActivity implements ApiCallback {
                 @Override
                 public void success(String json) {
                     runOnUiThread(() -> {
-
-                        Log.d("info", "success");
-                       //Snackbar.make(findViewById(R.id.coordinator_root), "Success", Snackbar.LENGTH_SHORT).show();
+                        Log.d("success", json);
+                        LoginActivity.this.success(json);
                     });
                 }
             });
+
+
 
         }
     }
@@ -151,7 +150,6 @@ public class LoginActivity extends AppCompatActivity implements ApiCallback {
         mProgressView.setVisibility(View.INVISIBLE);
         handler.post(() -> {
             Log.d("Grosse_bourde", "fail: " + json);
-            Snackbar.make(findViewById(R.id.coordinator_root), "Erreur", Snackbar.LENGTH_SHORT).show();
 
         });
     }
@@ -160,10 +158,7 @@ public class LoginActivity extends AppCompatActivity implements ApiCallback {
     public void success(final String json) {
 
         handler.post(() -> {
-            Log.d("Reussi", "success: " + json);
-
-            Snackbar.make(findViewById(R.id.coordinator_root), "Anniversaire rajouté", Snackbar.LENGTH_SHORT).show();
-
+            Log.d("Reussi", "return_success: " + json);
             startActivity(new Intent(this, MainActivity.class));
             finish();
             
