@@ -159,6 +159,9 @@ public class LoginActivity extends AppCompatActivity implements ApiCallback {
 
         handler.post(() -> {
             Log.d("Reussi", "return_success: " + json);
+
+            Util.setUser(this, json);
+
             startActivity(new Intent(this, MainActivity.class));
             finish();
             
