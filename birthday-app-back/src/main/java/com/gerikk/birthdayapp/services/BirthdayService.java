@@ -1,14 +1,26 @@
 package com.gerikk.birthdayapp.services;
 
 import com.gerikk.birthdayapp.models.Birthday;
+import com.gerikk.birthdayapp.repositories.BirthdayRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-public interface BirthdayService {
+@Service
+public class BirthdayService {
 
-    public List<Birthday> getAllBirthdays();
+    private final BirthdayRepository birthdayRepository;
 
-    public List<Birthday> getBirthdaysByUserId(Long userId);
+    public BirthdayService(BirthdayRepository birthdayRepository) {
+        this.birthdayRepository = birthdayRepository;
+    }
 
-    public Birthday save(Birthday birthday);
+    public List<Birthday> getAllBirthdays() {
+
+        return birthdayRepository.findAll();
+    }
+
+    public Birthday save(Birthday birthday) {
+        return birthdayRepository.save(birthday);
+    }
 }

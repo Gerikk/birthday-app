@@ -1,12 +1,6 @@
 package com.gerikk.birthdayapp.controllers;
 
-import com.gerikk.birthdayapp.models.User;
 import com.gerikk.birthdayapp.services.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -18,12 +12,12 @@ public class LoginController {
         this.userService = userService;
     }
 
-    @GetMapping("/login")
-    public UserDetails login(@RequestBody User user){
+    /*@PostMapping("/login")
+    public User login(@RequestParam("username") final String username,
+                      @RequestParam("password") final String password) {
 
-        return userService.login(user.getUsername(), user.getPassword());
-    }
-
+        return userService.login(username, password);
+    }*/
 
 
 }

@@ -1,13 +1,18 @@
 package com.gerikk.birthdayapp.security;
 
+import com.gerikk.birthdayapp.filter.CustomAuthorizationFilter;
+import com.gerikk.birthdayapp.filter.CustumAuthenticationFilter;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -35,17 +40,29 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic()
                 .and()
                 .authorizeRequests()
+                .antMatchers("/login").permitAll()
                 .antMatchers(HttpMethod.POST, "/users").permitAll()
                 .antMatchers(HttpMethod.PUT, "/users").authenticated()
                 .antMatchers(HttpMethod.DELETE, "/users").authenticated()
                 .anyRequest().authenticated()
+                .and().formLogin().permitAll()
                 .and()
-                .formLogin()
-                .loginPage("/login")
-                .loginProcessingUrl("/perform_login")
-                .defaultSuccessUrl("/users", true)
-                .permitAll()
-                .and()
-                .csrf().disable();
+                .cors().and().csrf().disable();
+        http.addFilter(new CustumAuthenticationFilter(authenticationManagerBean()));
+
+        http.addFilterBefore(customAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
+
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        // TODO Auto-generated method stub
+        return super.authenticationManagerBean();
+    }
+
+    @Bean
+    public CustomAuthorizationFilter customAuthorizationFilter() {
+        return new CustomAuthorizationFilter();
+    }
+
 }

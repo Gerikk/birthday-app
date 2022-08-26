@@ -1,8 +1,9 @@
 package com.gerikk.birthdayapp.models;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Set;
 
 @Entity
@@ -19,20 +20,11 @@ public class User {
 
     private String email;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "user_role",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
-    )
-    private Collection<Role> roles;
-
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<Birthday> birthdays;
 
     public User() {
         super();
-        this.roles = new ArrayList<>();
     }
 
     @Override
@@ -43,6 +35,23 @@ public class User {
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 '}';
+    }
+
+    public String toJson() {
+
+        try {
+            // create `ObjectMapper` instance
+            ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
+            // create a JSON object
+            // convert `ObjectNode` to pretty-print JSON
+            // without pretty-print, use `user.toString()` method
+            // print json
+            return mapper.writeValueAsString(this);
+            //System.out.println(json);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
     }
 
     public Long getId() {
@@ -69,11 +78,7 @@ public class User {
         return birthdays;
     }
 
-    public Collection<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Collection<Role> roles) {
-        this.roles = roles;
+    public void setBirthdays(Set<Birthday> birthdays) {
+        this.birthdays = birthdays;
     }
 }

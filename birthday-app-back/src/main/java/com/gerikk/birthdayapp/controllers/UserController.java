@@ -1,54 +1,52 @@
 package com.gerikk.birthdayapp.controllers;
 
-import com.gerikk.birthdayapp.exceptions.UserNotFoundException;
 import com.gerikk.birthdayapp.models.Birthday;
 import com.gerikk.birthdayapp.models.User;
-import com.gerikk.birthdayapp.services.BirthdayServiceImpl;
-import com.gerikk.birthdayapp.services.UserServiceImpl;
+import com.gerikk.birthdayapp.services.BirthdayService;
+import com.gerikk.birthdayapp.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
 
-    private final UserServiceImpl userService;
+    private final UserService userService;
 
-    private final BirthdayServiceImpl birthdayService;
+    private final BirthdayService birthdayService;
 
 
-    public UserController(UserServiceImpl userService, BirthdayServiceImpl birthdayService) {
+    public UserController(UserService userService, BirthdayService birthdayService) {
         this.userService = userService;
         this.birthdayService = birthdayService;
     }
 
     @GetMapping({"", "/"})
-    public List<User> getUsers() {
-        return userService.getAllUsers();
+    public ResponseEntity<List<User>> getUsers() {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getAllUsers());
     }
 
     @PostMapping({"", "/"})
-    public ResponseEntity<User> createUser(@RequestBody User newUser) {
+    public ResponseEntity<User> createUser(@RequestParam User user) {
 
-        userService.save(newUser);
+        userService.save(user);
 
-        return new ResponseEntity<>(newUser, HttpStatus.CREATED);
+        return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 
     @GetMapping("/{userId}")
-    public User getUserById(@PathVariable("userId") Long id) {
+    public ResponseEntity<User> getUserById(@PathVariable("userId") Long id) {
 
-        Optional<User> foundUser = userService.getAllUsers().stream().filter(user -> user.getId().equals(id)).findFirst();
-
-        if (foundUser.isPresent()) {
-            return foundUser.get();
-        } else {
-            throw new UserNotFoundException();
+        try {
+            User user = userService.getUserById(id);
+            return ResponseEntity.ok(user);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
         }
 
     }
@@ -62,17 +60,34 @@ public class UserController {
     }
 
     @PostMapping("/{userId}/birthdays")
-    public ResponseEntity<Birthday> createBirthday(@PathVariable("userId") Long id, @RequestBody Birthday newBirthday) {
+    public ResponseEntity<Birthday> createBirthday(
+            @PathVariable("userId") Long id,
+            @RequestParam("firstname") final String firstname,
+            @RequestParam("lastname") final String lastname,
+            @RequestParam("date") final String date) {
+        try {
+            User user = userService.getUserById(id);
+            Birthday newBirthday = new Birthday(null, LocalDate.parse(date), firstname, lastname, user);
+            return ResponseEntity.ok(birthdayService.save(newBirthday));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
 
-        User user = userService.getUserById(id);
+    @PutMapping("/{userId}/birthdays/{birthdayId}")
+    public ResponseEntity<Birthday> updateBirthday(
+            @PathVariable("userId") Long id,
+            @PathVariable("birthdayId") Long birthdayId,
+            @RequestParam("firstname") final String firstname,
+            @RequestParam("lastname") final String lastname,
+            @RequestParam("date") final String date) {
+        try {
+            User user = userService.getUserById(id);
+            Birthday birthday = new Birthday(birthdayId, LocalDate.parse(date), firstname, lastname, user);
 
-        if (user == null) {
-            throw new UserNotFoundException();
-        } else {
-            newBirthday.setUser(user);
-            user.getBirthdays().add(newBirthday);
-            birthdayService.save(newBirthday);
-            return new ResponseEntity<>(newBirthday, HttpStatus.CREATED);
+            return ResponseEntity.ok(birthdayService.save(birthday));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
         }
     }
 
